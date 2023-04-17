@@ -38,7 +38,7 @@ const Input: FC<Props> = ({
                 control={control}
                 name={name}
                 rules={{ required, min, max, pattern }}
-                render={({ field: { onChange, onBlur, value } }) => (
+                render={({ field: { onChange, onBlur, value, ref } }) => (
                     <div>
                         <input
                             type={type}
@@ -48,6 +48,7 @@ const Input: FC<Props> = ({
                             }}
                             onBlur={onBlur}
                             value={value}
+                            ref={ref}
                             {...rest}
                         />
                     </div>
