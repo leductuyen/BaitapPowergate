@@ -10,6 +10,10 @@ const Api = {
         method: METHOD.POST,
         url: 'login',
     },
+    location: {
+        method: METHOD.GET,
+        url: 'location',
+    },
 }
 
 export default Api
