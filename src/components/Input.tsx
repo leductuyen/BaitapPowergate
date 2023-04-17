@@ -4,7 +4,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 import './scss/Input.scss'
 type Props = {
     name: string
-    label?: string
+    label?: any
     type?: string
     required?: string
     min?: number

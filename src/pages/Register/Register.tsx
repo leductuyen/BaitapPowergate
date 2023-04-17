@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
+import { IntlProvider, FormattedMessage } from 'react-intl'
+
 import Select from '../../components/Select'
 import Api from '../../constants/Api'
 import sendRequest from '../../services/ApiService'
@@ -13,6 +15,8 @@ import {
 import Button from '../../components/Button'
 import './Register.scss'
 import { validate } from '../../utils/validateAuth'
+import { translations } from '../../translations/translations'
+import CustomFormattedMessage from '../../components/CustomFormattedMessage'
 
 const Register = () => {
     //! Fake Data
@@ -22,6 +26,7 @@ const Register = () => {
     ]
 
     //! State
+    const [locale, setLocale] = useState('en')
     const [selectOptions, setSelectOptions] = useState([])
 
     const [formValues, setFormValues] = useState<IValues_Register>({
@@ -38,6 +43,9 @@ const Register = () => {
     })
 
     //! Function
+    const handleLocaleChange = () => {
+        setLocale(locale === 'en' ? 'vn' : 'en')
+    }
     const getDataOptions = async () => {
         try {
             const result = await sendRequest(Api.location)
@@ -58,61 +66,90 @@ const Register = () => {
 
     //! Return
     return (
-        <div className="register">
-            <img src={logo} alt="" />
+        <IntlProvider locale={locale} messages={translations[locale]}>
+            <div className="register">
+                <img src={logo} alt="" />
 
-            <FormProvider {...methods}>
-                <form onSubmit={methods.handleSubmit(onSubmit)}>
-                    <div className="form">
-                        <Input
-                            name={formInput_Register.login_email.attrs.name}
-                            label={formInput_Register.login_email.attrs.label}
-                            type={formInput_Register.login_email.attrs.type}
+                <FormProvider {...methods}>
+                    <form onSubmit={methods.handleSubmit(onSubmit)}>
+                        <div className="form">
+                            <Input
+                                name={formInput_Register.login_email.attrs.name}
+                                label={
+                                    formInput_Register.login_email.attrs.label
+                                }
+                                type={formInput_Register.login_email.attrs.type}
+                            />
+                        </div>
+                        <div className="form">
+                            <Input
+                                name={
+                                    formInput_Register.login_password.attrs.name
+                                }
+                                label={
+                                    formInput_Register.login_password.attrs
+                                        .label
+                                }
+                                type={
+                                    formInput_Register.login_password.attrs.type
+                                }
+                            />
+                        </div>
+                        <div className="form">
+                            <Input
+                                name={
+                                    formInput_Register.repeat_password.attrs
+                                        .name
+                                }
+                                label={
+                                    formInput_Register.repeat_password.attrs
+                                        .label
+                                }
+                                type={
+                                    formInput_Register.repeat_password.attrs
+                                        .type
+                                }
+                            />
+                        </div>
+                        <div className="form">
+                            <Input
+                                name={formInput_Register.name.attrs.name}
+                                label={
+                                    <CustomFormattedMessage
+                                        id={translations[locale].email.id}
+                                        defaultMessage={
+                                            translations[locale].email
+                                                .defaultMessage
+                                        }
+                                    />
+                                }
+                                type={formInput_Register.name.attrs.type}
+                            />
+                        </div>
+                        <Select
+                            label="Giới tính"
+                            name="gender"
+                            options={getDataGender}
+                            control={methods.control}
                         />
-                    </div>
-                    <div className="form">
-                        <Input
-                            name={formInput_Register.login_password.attrs.name}
-                            label={
-                                formInput_Register.login_password.attrs.label
-                            }
-                            type={formInput_Register.login_password.attrs.type}
+                        <Select
+                            label="Quốc gia"
+                            name="country"
+                            options={selectOptions}
+                            control={methods.control}
                         />
-                    </div>
-                    <div className="form">
-                        <Input
-                            name={formInput_Register.repeat_password.attrs.name}
-                            label={
-                                formInput_Register.repeat_password.attrs.label
-                            }
-                            type={formInput_Register.repeat_password.attrs.type}
-                        />
-                    </div>
-                    <div className="form">
-                        <Input
-                            name={formInput_Register.name.attrs.name}
-                            label={formInput_Register.name.attrs.label}
-                            type={formInput_Register.name.attrs.type}
-                        />
-                    </div>
-                    <Select
-                        label="Giới tính"
-                        name="gender"
-                        options={getDataGender}
-                        control={methods.control}
-                    />
-                    <Select
-                        label="Quốc gia"
-                        name="country"
-                        options={selectOptions}
-                        control={methods.control}
-                    />
-                    <div className="layutBtn">
-                        <Button label="Đăng nhập" className="button" />
-                    </div>
-                </form>
-            </FormProvider>
-        </div>
+                        <div className="layutBtn">
+                            <Button label="Đăng nhập" className="button" />
+                            <div>
+                                <button onClick={handleLocaleChange}>
+                                    {locale}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </FormProvider>
+            </div>
+        </IntlProvider>
     )
 }
 
