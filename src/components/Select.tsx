@@ -11,9 +11,17 @@ type SelectProps = {
     control: any
     label: any
     defaultValue?: any
+    onChange?: any
 }
 
-const Select = ({ name, options, control, label, ...rest }: SelectProps) => {
+const Select = ({
+    name,
+    options,
+    control,
+    label,
+    onChange,
+    ...rest
+}: SelectProps) => {
     return (
         <div>
             {label && (
@@ -35,7 +43,7 @@ const Select = ({ name, options, control, label, ...rest }: SelectProps) => {
                         ref={ref}
                         {...rest}
                     >
-                        {options.map(({ name, value, id }) => (
+                        {options?.map(({ name, value, id }) => (
                             <option key={id} value={value}>
                                 {name}
                             </option>

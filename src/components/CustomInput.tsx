@@ -1,7 +1,7 @@
 import { ErrorMessage } from '@hookform/error-message'
 import { FC } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
-import './scss/Input.scss'
+import './scss/Custom.scss'
 type Props = {
     name: string
     label?: any
@@ -12,7 +12,7 @@ type Props = {
     pattern?: RegExp
 }
 
-const Input: FC<Props> = ({
+const CustomInput: FC<Props> = ({
     name,
     label,
     type,
@@ -63,4 +63,4 @@ const Input: FC<Props> = ({
     )
 }
 
-export default Input
+export default CustomInput

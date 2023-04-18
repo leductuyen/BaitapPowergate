@@ -9,16 +9,19 @@ const sendRequest = async (
     },
     data?: any,
     headers?: any,
-    ...rest: any[]
+    extraParams?: { [key: string]: string }
 ) => {
     const { method, url } = api
 
+    const params = extraParams
+        ? `?${new URLSearchParams(extraParams).toString()}`
+        : ''
+
     const axiosConfig: AxiosRequestConfig = {
         method,
-        url: `${baseUrl}/${url}`,
+        url: `${baseUrl}/${url}${params}`,
         data: data || {},
         headers: headers || {},
-        ...rest,
     }
 
     try {
@@ -28,4 +31,5 @@ const sendRequest = async (
         throw error
     }
 }
+
 export default sendRequest

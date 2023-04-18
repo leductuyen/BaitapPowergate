@@ -3,14 +3,14 @@ import { FormProvider, useForm } from 'react-hook-form'
 import logo from '../../img/logo-420-x-108.png'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import Input from '../../components/Input'
+import Input from '../../components/CustomInput'
 import ToastMsg from '../../components/ToastMsg'
 import Api from '../../constants/Api'
 import sendRequest from '../../services/ApiService'
 import { validate } from '../../utils/validateAuth'
 import { IValues_Login, formInput_Login, initialValues_Login } from './Config'
 import './Login.scss'
-import Button from '../../components/Button'
+import CustomButton from '../../components/CustomButton'
 const Login = () => {
     const [showToast, setShowToast] = useState<boolean>(false)
     const [formValues, setFormValues] =
@@ -26,7 +26,7 @@ const Login = () => {
         setShowToast(true)
 
         try {
-            const response = await sendRequest(Api.login, {
+            const response = await sendRequest(Api.auth.login, {
                 login_email: data.email,
                 login_password: data.password,
             })
@@ -68,7 +68,7 @@ const Login = () => {
                         />
                     </div>
                     <div className="layutBtn">
-                        <Button label="Đăng nhập" className="button" />
+                        <CustomButton label="Đăng nhập" className="button" />
                     </div>
                 </form>
             </FormProvider>

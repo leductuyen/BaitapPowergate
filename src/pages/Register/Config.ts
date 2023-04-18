@@ -1,3 +1,11 @@
+export interface ICountryOptions {
+    id: number
+    name: string
+}
+export interface ICityOptions {
+    id: number
+    name: string
+}
 export interface IValues_Register {
     email: string
     password: string
@@ -5,6 +13,7 @@ export interface IValues_Register {
     name?: string
     gender?: string
     country?: any
+    city?: any
 }
 
 export interface IFormInput_Register {
@@ -22,6 +31,9 @@ export const initialValues_Register: IValues_Register = {
     password: '',
     repeat_password: '',
     name: '',
+    gender: '',
+    country: '',
+    city: '',
 }
 
 export const formInput_Register: IFormInput_Register = {

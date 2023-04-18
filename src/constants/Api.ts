@@ -6,9 +6,15 @@ const METHOD = {
 }
 
 const Api = {
-    login: {
-        method: METHOD.POST,
-        url: 'login',
+    auth: {
+        login: {
+            method: METHOD.POST,
+            url: 'login',
+        },
+        register: {
+            method: METHOD.POST,
+            url: 'auth/register',
+        },
     },
     location: {
         method: METHOD.GET,

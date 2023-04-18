@@ -8,8 +8,8 @@ interface Props {
     label: string
     onClick?: any
 }
-const Button = ({ label, ...prop }: Props) => {
+const CustomButton = ({ label, ...prop }: Props) => {
     return <button {...prop}>{label}</button>
 }
 
-export default Button
+export default CustomButton
