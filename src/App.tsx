@@ -1,8 +1,6 @@
-import Test from './pages/Home/Test'
-import Login from './pages/Login/Login'
-import Register from './pages/Register/Register'
+import SwitchRoutes from './Routes'
 
 function App() {
-    return <Register />
+    return <SwitchRoutes />
 }
 export default App

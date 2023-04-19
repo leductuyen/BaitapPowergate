@@ -9,9 +9,16 @@ import Api from '../../constants/Api'
 import sendRequest from '../../services/ApiService'
 import { validate } from '../../utils/validateAuth'
 import { IValues_Login, formInput_Login, initialValues_Login } from './Config'
+import { useNavigate } from 'react-router-dom'
 import './Login.scss'
 import CustomButton from '../../components/CustomButton'
+import { Router } from '../../constants/Router'
+import messages from '../../translations/messages'
 const Login = () => {
+    //! navigate
+    const navigate = useNavigate()
+
+    //! State
     const [showToast, setShowToast] = useState<boolean>(false)
     const [formValues, setFormValues] =
         useState<IValues_Login>(initialValues_Login)
@@ -21,6 +28,7 @@ const Login = () => {
         resolver: validate,
     })
 
+    //! Function
     const onSubmit = async (data: IValues_Login) => {
         setFormValues(data)
         setShowToast(true)
@@ -46,8 +54,13 @@ const Login = () => {
             }
             ToastMsg(toastProps)
         }
-        //navigate
+        navigate(Router.home.home)
     }
+    const navigateRegister = () => {
+        navigate(Router.auth.signup)
+    }
+
+    //! Return
     return (
         <div className="login">
             <img src={logo} alt="" />
@@ -72,6 +85,11 @@ const Login = () => {
                     </div>
                 </form>
             </FormProvider>
+            <CustomButton
+                label="Đăng kí"
+                onClick={navigateRegister}
+                className="btn-navigate-register"
+            />
             {showToast && <ToastContainer />}
         </div>
     )

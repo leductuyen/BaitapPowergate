@@ -17,13 +17,17 @@ import {
 import './Register.scss'
 
 import CustomSelect from '../../components/CustomSelect'
-
+import { useNavigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import ToastMsg from '../../components/ToastMsg'
 import { getDataGender } from '../../services/mockApi'
 import messages from '../../translations/messages'
+import { Router } from '../../constants/Router'
 
 const Register = () => {
+    //! Navigate
+    const naviate = useNavigate()
+
     //! State
     const [showToast, setShowToast] = useState<boolean>(false)
     const [locale, setLocale] = useState('vn')
@@ -97,8 +101,11 @@ const Register = () => {
             }
             ToastMsg(toastProps)
         }
+        naviate(Router.auth.login)
     }
-
+    const navigateLogin = () => {
+        naviate(Router.auth.login)
+    }
     //! Effect
     useEffect(() => {
         getDataCountryOptions()
@@ -189,6 +196,13 @@ const Register = () => {
                             </div>
                         </form>
                     </FormProvider>
+
+                    <CustomButton
+                        label={messages[locale].login}
+                        onClick={navigateLogin}
+                        className="btn-navigate-login"
+                    />
+
                     {showToast && <ToastContainer />}
                 </div>
                 <div className="layout-btn-translations">

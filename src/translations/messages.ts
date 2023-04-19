@@ -14,6 +14,7 @@ const messages: IMessages = {
         country: 'Quốc gia',
         city: 'Thành phố',
         register: 'Đăng kí',
+        login: 'Đăng nhập',
     },
     en: {
         email: 'Address Email',
@@ -24,6 +25,7 @@ const messages: IMessages = {
         country: 'Country',
         city: 'City',
         register: 'Register',
+        login: 'Login',
     },
 }
 
