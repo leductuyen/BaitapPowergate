@@ -56,7 +56,7 @@ const Login = () => {
         navigate(Router.home.home)
     }
     const navigateRegister = () => {
-        navigate(Router.auth.signup)
+        navigate(Router.home.home)
     }
 
     //! Return

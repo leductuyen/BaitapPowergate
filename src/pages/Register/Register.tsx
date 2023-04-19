@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { IntlProvider } from 'react-intl'
 import CustomButton from '../../components/CustomButton'
@@ -23,14 +23,17 @@ import ToastMsg from '../../components/ToastMsg'
 import { getDataGender } from '../../services/mockApi'
 import messages from '../../translations/messages'
 import { Router } from '../../constants/Router'
+import { TranslationsContext } from '../../context/translationContext'
 
 const Register = () => {
     //! Navigate
     const naviate = useNavigate()
 
+    //! Context
+    const { locale, handleLocaleChange } = useContext(TranslationsContext)
+
     //! State
     const [showToast, setShowToast] = useState<boolean>(false)
-    const [locale, setLocale] = useState('vn')
 
     const [countryOptions, setCountryOptions] = useState<ICountryOptions[]>([])
 
@@ -47,9 +50,7 @@ const Register = () => {
     })
 
     //! Function
-    const handleLocaleChange = () => {
-        setLocale(locale === 'en' ? 'vn' : 'en')
-    }
+
     const getDataCountryOptions = async () => {
         try {
             const result = await sendRequest(Api.location)
@@ -113,107 +114,97 @@ const Register = () => {
 
     //! Return
     return (
-        <IntlProvider locale={locale} messages={messages[locale]}>
-            <div className="container">
-                <div className="register">
-                    <img src={logo} alt="" />
+        <div className="container">
+            <div className="register">
+                <img src={logo} alt="" />
 
-                    <FormProvider {...methods}>
-                        <form onSubmit={methods.handleSubmit(onSubmit)}>
-                            <div className="form">
-                                <CustomInput
-                                    name={
-                                        formInput_Register.login_email.attrs
-                                            .name
-                                    }
-                                    label={messages[locale].email}
-                                    type={
-                                        formInput_Register.login_email.attrs
-                                            .type
-                                    }
-                                />
-                            </div>
-                            <div className="form">
-                                <CustomInput
-                                    name={
-                                        formInput_Register.login_password.attrs
-                                            .name
-                                    }
-                                    label={messages[locale].password}
-                                    type={
-                                        formInput_Register.login_password.attrs
-                                            .type
-                                    }
-                                />
-                            </div>
-                            <div className="form">
-                                <CustomInput
-                                    name={
-                                        formInput_Register.repeat_password.attrs
-                                            .name
-                                    }
-                                    label={messages[locale].repeat_password}
-                                    type={
-                                        formInput_Register.repeat_password.attrs
-                                            .type
-                                    }
-                                />
-                            </div>
-                            <div className="form">
-                                <CustomInput
-                                    name={formInput_Register.name.attrs.name}
-                                    label={messages[locale].name}
-                                    type={formInput_Register.name.attrs.type}
-                                />
-                            </div>
-                            <div className="form">
-                                <CustomSelect
-                                    label={messages[locale].gender}
-                                    options={getDataGender}
-                                    onChange={() => {}}
-                                />
-                            </div>
-                            <div className="form">
-                                <CustomSelect
-                                    label={messages[locale].country}
-                                    options={countryOptions}
-                                    onChange={handleCountryChange}
-                                />
-                            </div>
-                            <div className="form">
-                                <CustomSelect
-                                    label={messages[locale].city}
-                                    options={cityOptions}
-                                    onChange={() => {}}
-                                />
-                            </div>
+                <FormProvider {...methods}>
+                    <form onSubmit={methods.handleSubmit(onSubmit)}>
+                        <div className="form">
+                            <CustomInput
+                                name={formInput_Register.login_email.attrs.name}
+                                label={messages[locale].email}
+                                type={formInput_Register.login_email.attrs.type}
+                            />
+                        </div>
+                        <div className="form">
+                            <CustomInput
+                                name={
+                                    formInput_Register.login_password.attrs.name
+                                }
+                                label={messages[locale].password}
+                                type={
+                                    formInput_Register.login_password.attrs.type
+                                }
+                            />
+                        </div>
+                        <div className="form">
+                            <CustomInput
+                                name={
+                                    formInput_Register.repeat_password.attrs
+                                        .name
+                                }
+                                label={messages[locale].repeat_password}
+                                type={
+                                    formInput_Register.repeat_password.attrs
+                                        .type
+                                }
+                            />
+                        </div>
+                        <div className="form">
+                            <CustomInput
+                                name={formInput_Register.name.attrs.name}
+                                label={messages[locale].name}
+                                type={formInput_Register.name.attrs.type}
+                            />
+                        </div>
+                        <div className="form">
+                            <CustomSelect
+                                label={messages[locale].gender}
+                                options={getDataGender}
+                                onChange={() => {}}
+                            />
+                        </div>
+                        <div className="form">
+                            <CustomSelect
+                                label={messages[locale].country}
+                                options={countryOptions}
+                                onChange={handleCountryChange}
+                            />
+                        </div>
+                        <div className="form">
+                            <CustomSelect
+                                label={messages[locale].city}
+                                options={cityOptions}
+                                onChange={() => {}}
+                            />
+                        </div>
 
-                            <div className="layout-btn-register">
-                                <CustomButton
-                                    label={messages[locale].register}
-                                    className="button"
-                                />
-                            </div>
-                        </form>
-                    </FormProvider>
+                        <div className="layout-btn-register">
+                            <CustomButton
+                                label={messages[locale].register}
+                                className="button"
+                            />
+                        </div>
+                    </form>
+                </FormProvider>
 
-                    <CustomButton
-                        label={messages[locale].login}
-                        onClick={navigateLogin}
-                        className="btn-navigate-login"
-                    />
+                <CustomButton
+                    label={messages[locale].login}
+                    onClick={navigateLogin}
+                    className="btn-navigate-login"
+                />
 
-                    {showToast && <ToastContainer />}
-                </div>
-                <div className="layout-btn-translations">
-                    <CustomButton
-                        onClick={handleLocaleChange}
-                        className="button"
-                        label={locale}
-                    />
-                </div>
+                {showToast && <ToastContainer />}
             </div>
-        </IntlProvider>
+            <div className="layout-btn-translations">
+                <CustomButton
+                    onClick={handleLocaleChange}
+                    className="button"
+                    label={locale}
+                />
+            </div>
+        </div>
     )
 }
 

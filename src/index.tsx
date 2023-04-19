@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import { Provider } from 'react-redux'
 import reportWebVitals from './reportWebVitals'
+import { TranslationsProvider } from './context/translationContext'
 import { store } from './app/store'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
@@ -11,7 +12,9 @@ root.render(
     <React.StrictMode>
         <Provider store={store}>
             <BrowserRouter>
-                <App />
+                <TranslationsProvider>
+                    <App />
+                </TranslationsProvider>
             </BrowserRouter>
         </Provider>
     </React.StrictMode>
