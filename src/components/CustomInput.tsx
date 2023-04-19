@@ -2,6 +2,7 @@ import { ErrorMessage } from '@hookform/error-message'
 import { FC } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import './scss/Custom.scss'
+import { validate } from '../utils/validateAuth'
 type Props = {
     name: string
     label?: any
@@ -25,6 +26,7 @@ const CustomInput: FC<Props> = ({
     const {
         control,
         formState: { errors },
+        trigger,
     } = useFormContext()
 
     return (
@@ -43,10 +45,13 @@ const CustomInput: FC<Props> = ({
                         <input
                             type={type}
                             onChange={(e) => {
+                                trigger(name) // validate user onChange input
                                 onChange(e.target.value)
+                            }}
+                            onBlur={() => {
+                                trigger(name) // validate user OnBlur input
                                 onBlur()
                             }}
-                            onBlur={onBlur}
                             value={value}
                             ref={ref}
                             {...rest}
