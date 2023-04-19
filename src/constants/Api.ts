@@ -20,6 +20,14 @@ const Api = {
         method: METHOD.GET,
         url: 'location',
     },
+    photos: {
+        method: METHOD.GET,
+        url: 'photos',
+    },
+    posts: {
+        method: METHOD.GET,
+        url: 'posts',
+    },
 }
 
 export default Api

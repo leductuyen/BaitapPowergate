@@ -9,7 +9,7 @@ const sendRequest = async (
     },
     data?: any,
     headers?: any,
-    extraParams?: { [key: string]: string }
+    extraParams?: { [key: string]: any }
 ) => {
     const { method, url } = api
 

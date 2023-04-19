@@ -2,7 +2,6 @@ import { ErrorMessage } from '@hookform/error-message'
 import { FC } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import './scss/Custom.scss'
-import { validate } from '../utils/validateAuth'
 type Props = {
     name: string
     label?: any

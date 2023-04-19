@@ -1,6 +1,5 @@
-import { useEffect, useState, useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { IntlProvider } from 'react-intl'
 import CustomButton from '../../components/CustomButton'
 import CustomInput from '../../components/CustomInput'
 import Api from '../../constants/Api'
@@ -16,14 +15,14 @@ import {
 } from './Config'
 import './Register.scss'
 
-import CustomSelect from '../../components/CustomSelect'
 import { useNavigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
+import CustomSelect from '../../components/CustomSelect'
 import ToastMsg from '../../components/ToastMsg'
-import { getDataGender } from '../../services/mockApi'
-import messages from '../../translations/messages'
 import { Router } from '../../constants/Router'
 import { TranslationsContext } from '../../context/translationContext'
+import { getDataGender } from '../../services/mockApi'
+import messages from '../../translations/messages'
 
 const Register = () => {
     //! Navigate
