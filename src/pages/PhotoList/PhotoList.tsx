@@ -1,17 +1,22 @@
 import { useEffect, useRef, useState } from 'react'
+import { useAppDispatch } from '../../app/hooks'
 import Api from '../../constants/Api'
 import sendRequest from '../../services/ApiService'
+import { dataPhotos } from '../../store/slice/photoSlice'
 import { IPhoto } from './Config'
 
 const PhotoList = () => {
+    const dispatch = useAppDispatch()
+
     const [inputValues, setInputValues] = useState<Record<number, string>>({})
-    console.log(inputValues)
+
     const [photos, setPhotos] = useState<IPhoto[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [limit, setLimit] = useState<number>(10)
     const [shouldWait, setShouldWait] = useState<boolean>(false)
     const [isEndOfList, setIsEndOfList] = useState<boolean>(false)
     const [isEditing, setIsEditing] = useState<number | null>(null)
+
     const loaderRef = useRef<HTMLDivElement>(null)
 
     const getDataPhotos = async () => {
@@ -25,6 +30,7 @@ const PhotoList = () => {
                 { _limit: limit }
             )
             setPhotos(response)
+            dispatch(dataPhotos(response))
         } catch (error) {
             setIsLoading(false)
         }
@@ -44,7 +50,6 @@ const PhotoList = () => {
         }))
         setIsEditing(index)
     }
-
     const handleBlur = (index: number) => {
         if (inputValues[index]) {
             const newPhotos = [...photos]
@@ -54,9 +59,11 @@ const PhotoList = () => {
             }
             setPhotos(newPhotos)
         }
-        setInputValues((prevInputValues) => ({
-            ...prevInputValues,
-        }))
+    }
+    const handleSave = () => {
+        const newPhotos = [...photos]
+        dispatch(dataPhotos(newPhotos))
+        console.log(newPhotos)
     }
 
     const handleScroll = () => {
@@ -93,6 +100,8 @@ const PhotoList = () => {
 
     return (
         <div>
+            <button onClick={handleSave}>save</button>
+
             {photos.map((photo, index) => (
                 <div key={index}>
                     <img src={photo.thumbnailUrl} alt="" loading="lazy" />
