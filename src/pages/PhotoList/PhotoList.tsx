@@ -1,22 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react'
-import sendRequest from '../../services/ApiService'
+import { useEffect, useRef, useState } from 'react'
 import Api from '../../constants/Api'
-
-interface IPhoto {
-    id: number
-    title: string
-    url: string
-    thumbnailUrl: string
-}
+import sendRequest from '../../services/ApiService'
+import { IPhoto } from './Config'
 
 const PhotoList = () => {
+    const [inputValues, setInputValues] = useState<Record<number, string>>({})
+    console.log(inputValues)
     const [photos, setPhotos] = useState<IPhoto[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [limit, setLimit] = useState<number>(10)
-
     const [shouldWait, setShouldWait] = useState<boolean>(false)
     const [isEndOfList, setIsEndOfList] = useState<boolean>(false)
-
+    const [isEditing, setIsEditing] = useState<number | null>(null)
     const loaderRef = useRef<HTMLDivElement>(null)
 
     const getDataPhotos = async () => {
@@ -33,6 +28,35 @@ const PhotoList = () => {
         } catch (error) {
             setIsLoading(false)
         }
+    }
+
+    const handleInputChange = (index: number, value: string) => {
+        setInputValues((prevInputValues) => ({
+            ...prevInputValues,
+            [index]: value,
+        }))
+    }
+
+    const handleTitleClick = (index: number) => {
+        setInputValues((prevInputValues) => ({
+            ...prevInputValues,
+            [index]: photos[index].title,
+        }))
+        setIsEditing(index)
+    }
+
+    const handleBlur = (index: number) => {
+        if (inputValues[index]) {
+            const newPhotos = [...photos]
+            newPhotos[index] = {
+                ...newPhotos[index],
+                title: inputValues[index],
+            }
+            setPhotos(newPhotos)
+        }
+        setInputValues((prevInputValues) => ({
+            ...prevInputValues,
+        }))
     }
 
     const handleScroll = () => {
@@ -69,10 +93,24 @@ const PhotoList = () => {
 
     return (
         <div>
-            {photos.map((photo, key) => (
-                <div key={key}>
+            {photos.map((photo, index) => (
+                <div key={index}>
                     <img src={photo.thumbnailUrl} alt="" loading="lazy" />
-                    {photo.title}
+
+                    {isEditing === index ? (
+                        <input
+                            value={inputValues[index] || ''}
+                            onChange={(e) =>
+                                handleInputChange(index, e.target.value)
+                            }
+                            onBlur={() => handleBlur(index)}
+                            autoFocus
+                        />
+                    ) : (
+                        <span onClick={() => handleTitleClick(index)}>
+                            {photo.title}
+                        </span>
+                    )}
                 </div>
             ))}
             {shouldWait ? (
