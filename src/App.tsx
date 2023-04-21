@@ -1,7 +1,6 @@
-import SwitchRoutes from './Routes'
-import PhotoList from './pages/PhotoList/PhotoList'
 import './App.css'
+import SwitchRoutes from './Routes'
 function App() {
-    return <PhotoList />
+    return <SwitchRoutes />
 }
 export default App
