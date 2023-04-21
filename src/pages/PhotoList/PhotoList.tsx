@@ -4,15 +4,14 @@ import Api from '../../constants/Api'
 import sendRequest from '../../services/ApiService'
 import { dataPhotos, selectorPhotos } from '../../store/slice/photoSlice'
 import { IPhoto } from './Config'
+import './PhotoList.scss'
 
 const PhotoList = () => {
     const dispatch = useAppDispatch()
-
     const dataListPhoto = useAppSelector(selectorPhotos)
 
     const [inputValues, setInputValues] = useState<Record<number, string>>({})
     const [photoTimes, setPhotoTimes] = useState<Record<number, number>>({})
-
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [limit, setLimit] = useState<number>(10)
     const [shouldWait, setShouldWait] = useState<boolean>(false)
@@ -70,7 +69,6 @@ const PhotoList = () => {
                     ...newPhotos[index],
                     title: inputValues[index],
                 }
-                // update time for the photo
                 setPhotoTimes((prevPhotoTimes) => ({
                     ...prevPhotoTimes,
                     [index]: Date.now(),
@@ -120,9 +118,11 @@ const PhotoList = () => {
             setIsEndOfList(false)
         }
     }, [isEndOfList])
+
     useEffect(() => {
         setSavedData(dataListPhoto)
     }, [dataListPhoto])
+
     useEffect(() => {
         const currentTime = new Date().getTime()
 
@@ -137,33 +137,34 @@ const PhotoList = () => {
     }, [dataListPhoto, photoTimes])
 
     return (
-        <div>
+        <div className="photoList">
             <button onClick={handleSave}>save</button>
             <button onClick={reset}>reset</button>
 
             {dataListPhoto.map((photo: IPhoto, index: number) => (
-                <div key={index}>
+                <div key={index} className="layout">
                     <img src={photo.thumbnailUrl} alt="" loading="lazy" />
-
-                    {isEditing === index ? (
-                        <input
-                            value={inputValues[index] || ''}
-                            onChange={(e) =>
-                                handleInputChange(index, e.target.value)
-                            }
-                            onBlur={() => handleBlur(index)}
-                            autoFocus
-                        />
-                    ) : (
-                        <span onClick={() => handleTitleClick(index)}>
-                            {photo.title}
-                        </span>
-                    )}
-                    {photoTimes[index] && (
-                        <span>
-                            {new Date(photoTimes[index]).toLocaleString()}
-                        </span>
-                    )}
+                    <div className="title">
+                        {isEditing === index ? (
+                            <input
+                                value={inputValues[index] || ''}
+                                onChange={(e) =>
+                                    handleInputChange(index, e.target.value)
+                                }
+                                onBlur={() => handleBlur(index)}
+                                autoFocus
+                            />
+                        ) : (
+                            <span onClick={() => handleTitleClick(index)}>
+                                {photo.title}
+                            </span>
+                        )}
+                        {photoTimes[index] && (
+                            <span>
+                                {new Date(photoTimes[index]).toLocaleString()}
+                            </span>
+                        )}
+                    </div>
                 </div>
             ))}
             {shouldWait ? (
