@@ -59,7 +59,9 @@ const PhotoList = () => {
                 ...newPhotos[index],
                 title: inputValues[index],
             }
+            dispatch(dataPhotos(newPhotos))
         }
+        setIsEditing(null)
     }
     const handleSave = () => {
         const newPhotos = [...dataListPhoto]
