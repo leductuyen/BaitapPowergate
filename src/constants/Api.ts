@@ -29,8 +29,13 @@ const Api = {
         url: 'posts',
     },
     table: {
-        method: METHOD.GET,
-        url: 'get-data_table',
+        get: {
+            method: METHOD.GET,
+            url: 'get-data_table',
+        },
+        delete: {
+            method: METHOD.DELETE,
+        },
     },
 }
 

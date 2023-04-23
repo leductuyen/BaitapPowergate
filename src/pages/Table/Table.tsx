@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import Select from '../../components/Select'
+import moment from 'moment'
+
 import './Table.scss'
 import {
     IDataTable,
     clientOptions,
-    data,
     invoiceOptions,
     statusOptions,
 } from './Config'
@@ -20,20 +21,19 @@ function Table() {
         from: '',
         to: '',
     })
+
     const [dataTable, setDataTable] = useState<IDataTable[]>([])
     const getDataTable = async () => {
         try {
-            const response = await sendRequest(Api.table)
+            const response = await sendRequest(Api.table.get)
             setDataTable(response?.result.data)
         } catch (error) {}
     }
-    const handleOptionChange = (
-        event: React.ChangeEvent<HTMLSelectElement>
-    ) => {
+    const handleOptionChange = (event: any) => {
         setOptions({ ...options, [event.target.name]: event.target.value })
     }
     const handleApply = () => {
-        const filteredData = data.filter((item) => {
+        const filteredData = dataTable.filter((item) => {
             let shouldInclude = true
             if (options.status && options.status !== item.status) {
                 shouldInclude = false
@@ -41,19 +41,27 @@ function Table() {
             if (options.client && options.client !== item.client) {
                 shouldInclude = false
             }
-            if (
-                options.date &&
-                (item.from < options.from || item.to > options.to)
-            ) {
-                shouldInclude = false
-            }
             if (options.invoice && options.invoice !== item.invoice) {
                 shouldInclude = false
             }
+            if (
+                options.from &&
+                !moment(item.date).isSameOrAfter(options.from)
+            ) {
+                shouldInclude = false
+            }
+            if (options.to && !moment(item.date).isSameOrBefore(options.to)) {
+                shouldInclude = false
+            }
+
             return shouldInclude
         })
         setDataTable(filteredData)
     }
+    const handleDelete = (id: any) => {
+        setDataTable(dataTable.filter((item) => item.id !== id))
+    }
+
     useEffect(() => {
         getDataTable()
     }, [])
@@ -81,8 +89,27 @@ function Table() {
                                 selects={clientOptions}
                             />
                         </th>
-                        <th>From</th>
-                        <th>To</th>
+                        <th>
+                            <label htmlFor="from-date-select">From</label>
+                            <input
+                                type="date"
+                                id="from-date-select"
+                                name="from"
+                                value={options.from}
+                                onChange={handleOptionChange}
+                            />
+                        </th>
+                        <th>
+                            <label htmlFor="to-date-select">To</label>
+                            <input
+                                type="date"
+                                id="to-date-select"
+                                name="to"
+                                value={options.to}
+                                onChange={handleOptionChange}
+                            />
+                        </th>
+
                         <th>
                             <Select
                                 id="invoice-select"
@@ -92,6 +119,7 @@ function Table() {
                                 selects={invoiceOptions}
                             />
                         </th>
+                        <th></th>
                         <td>
                             <button onClick={handleApply}>Apply</button>
                         </td>
@@ -103,20 +131,24 @@ function Table() {
                 <tbody>
                     <tr>
                         <td>Status</td>
+                        <td>Date</td>
                         <td>Client</td>
-                        <td>From</td>
-                        <td>To</td>
-                        <td>Invoice</td>
+                        <td>Currentcy</td>
+                        <td>Total</td>
+                        <td>Invocie</td>
                     </tr>
                     {dataTable.map((table) => (
                         <tr key={table.id}>
                             <td>{table.status}</td>
                             <td>{table.client}</td>
                             <td>{table.from}</td>
-                            <td>{table.to}</td>
+                            <td>{table.currency}</td>
+                            <td>{table.total}</td>
                             <td>{table.invoice}</td>
                             <td>
-                                <button>Delete</button>
+                                <button onClick={() => handleDelete(table.id)}>
+                                    Delete
+                                </button>
                             </td>
                             <td>
                                 <button>ViewAll</button>

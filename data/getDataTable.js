@@ -13,13 +13,14 @@ module.exports = (query) => {
                         {
                             id: 1,
                             name: 'Option 1',
-                            from: '2023-01-01',
-                            to: '2023-02-02',
+                            from: new Date('2023-01-01'),
+                            to: new Date('2023-02-02'),
                             client: 'Adidas',
                             invoice: 'Invoice 1',
                             status: 'Processing',
                             currency: 'USD',
                             total: '2,300.00',
+                            date: '2023-15-02',
                         },
                         {
                             id: 2,
@@ -31,6 +32,7 @@ module.exports = (query) => {
                             status: 'Fullfield',
                             currency: 'EUR',
                             total: '2,300.00',
+                            date: '2023-15-03',
                         },
                         {
                             id: 3,
@@ -42,6 +44,7 @@ module.exports = (query) => {
                             status: 'Pending',
                             currency: 'USD',
                             total: '2,300.00',
+                            date: '2023-15-05',
                         },
                         {
                             id: 4,
@@ -53,6 +56,7 @@ module.exports = (query) => {
                             status: 'Received',
                             currency: 'USD',
                             total: '2,300.00',
+                            date: '2023-15-07',
                         },
                         {
                             id: 5,
@@ -64,6 +68,7 @@ module.exports = (query) => {
                             status: 'Received',
                             currency: 'EUR',
                             total: '2,300.00',
+                            date: '2023-15-02',
                         },
                         {
                             id: 6,
@@ -75,6 +80,7 @@ module.exports = (query) => {
                             status: 'Pending',
                             currency: 'USD',
                             total: '2,300.00',
+                            date: '2023-15-05',
                         },
                     ],
                 },

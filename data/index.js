@@ -6,6 +6,8 @@ const path = require('path')
 const login = require('./login')
 const getBranchInfo = require('./getBranchInfo')
 const getDataTable = require('./getDataTable')
+const deleteDataTable = require('./deleteDataTable')
+
 const server = jsonServer.create()
 const router = jsonServer.router(path.join(__dirname, 'db.json'))
 const middlewares = jsonServer.defaults()
@@ -13,8 +15,6 @@ const middlewares = jsonServer.defaults()
 server.use(jsonServer.bodyParser)
 server.use(middlewares)
 
-// Custom middleware to access POST methids.
-// Can be customized for other HTTP method as well.
 server.use((req, res, next) => {
     if (req.method === 'POST') {
         const endPoint = req.originalUrl
@@ -45,6 +45,16 @@ server.use((req, res, next) => {
         }
 
         next()
+    }
+    if (req.method === 'DELETE') {
+        const endPoint = req.originalUrl
+        if (endPoint.includes('/delete-data_table')) {
+            const id = req.query.id
+            const result = deleteDataTable(id)
+            const { status, json } = result
+            res.status(status).json(json)
+            return
+        }
     }
 })
 
