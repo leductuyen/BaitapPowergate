@@ -1,6 +1,7 @@
-import './App.css'
-import SwitchRoutes from './Routes'
-function App() {
-    return <SwitchRoutes />
+import Table from './pages/Table/Table'
+
+const App = () => {
+    return <Table />
 }
+
 export default App

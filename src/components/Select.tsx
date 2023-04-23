@@ -1,57 +1,36 @@
-import { Controller } from 'react-hook-form'
-type Option = {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export type IOption = {
+    key: string
     name: string
+}
+export type ISelectProps = {
+    id?: string
     value?: string
-    id: number
-}
-
-type SelectProps = {
-    name: string
-    options: Option[]
-    control: any
-    label: any
-    defaultValue?: any
+    name?: string
     onChange?: any
+    onBlur?: any
+    className?: string | any
+    selects: IOption[]
+    defaultValue?: IOption
+    errMessageList?: string[]
+    disabled?: boolean
 }
 
-const Select = ({
-    name,
-    options,
-    control,
-    label,
-    onChange,
-    ...rest
-}: SelectProps) => {
+const Select = (props: ISelectProps) => {
+    const { selects, defaultValue, ...select } = props
     return (
-        <div>
-            {label && (
-                <label htmlFor={name} className="label">
-                    {label}
-                </label>
+        <select {...select}>
+            {!!defaultValue && (
+                <option value={defaultValue.key}>{defaultValue.name}</option>
             )}
-            <Controller
-                name={name}
-                control={control}
-                render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <select
-                        onChange={(e) => {
-                            onChange(e.target.value)
-                            onBlur()
-                        }}
-                        onBlur={onBlur}
-                        value={value}
-                        ref={ref}
-                        {...rest}
-                    >
-                        {options?.map(({ name, value, id }) => (
-                            <option key={id} value={value}>
-                                {name}
-                            </option>
-                        ))}
-                    </select>
-                )}
-            />
-        </div>
+            {!!selects &&
+                selects.map((item, key) => (
+                    <option value={item.key} key={key}>
+                        {item.name}
+                    </option>
+                ))}
+        </select>
     )
 }
+
 export default Select

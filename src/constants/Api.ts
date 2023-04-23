@@ -28,6 +28,10 @@ const Api = {
         method: METHOD.GET,
         url: 'posts',
     },
+    table: {
+        method: METHOD.GET,
+        url: 'get-data_table',
+    },
 }
 
 export default Api

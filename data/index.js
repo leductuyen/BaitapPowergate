@@ -5,7 +5,7 @@ const path = require('path')
 /* import handle */
 const login = require('./login')
 const getBranchInfo = require('./getBranchInfo')
-
+const getDataTable = require('./getDataTable')
 const server = jsonServer.create()
 const router = jsonServer.router(path.join(__dirname, 'db.json'))
 const middlewares = jsonServer.defaults()
@@ -33,6 +33,12 @@ server.use((req, res, next) => {
 
         if (endPoint.includes('/get-branch_info')) {
             const result = getBranchInfo(req.query)
+            const { status, json } = result
+            res.status(status).json(json)
+            return
+        }
+        if (endPoint.includes('/get-data_table')) {
+            const result = getDataTable(req.query)
             const { status, json } = result
             res.status(status).json(json)
             return
