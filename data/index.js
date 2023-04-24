@@ -4,7 +4,7 @@ const path = require('path')
 
 /* import handle */
 const login = require('./login')
-const getBranchInfo = require('./getBranchInfo')
+
 const getDataTable = require('./getDataTable')
 
 const server = jsonServer.create()
@@ -30,12 +30,6 @@ server.use((req, res, next) => {
     if (req.method === 'GET') {
         const endPoint = req.originalUrl
 
-        if (endPoint.includes('/get-branch_info')) {
-            const result = getBranchInfo(req.query)
-            const { status, json } = result
-            res.status(status).json(json)
-            return
-        }
         if (endPoint.includes('/get-data_table')) {
             const result = getDataTable(req.query)
             const { status, json } = result
