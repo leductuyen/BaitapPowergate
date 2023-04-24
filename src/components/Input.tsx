@@ -4,7 +4,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 import './scss/Input.scss'
 type Props = {
     name: string
-    label?: string
+    label?: any
     type?: string
     required?: string
     min?: number
@@ -25,6 +25,7 @@ const Input: FC<Props> = ({
     const {
         control,
         formState: { errors },
+        trigger,
     } = useFormContext()
 
     return (
@@ -38,16 +39,20 @@ const Input: FC<Props> = ({
                 control={control}
                 name={name}
                 rules={{ required, min, max, pattern }}
-                render={({ field: { onChange, onBlur, value } }) => (
+                render={({ field: { onChange, onBlur, value, ref } }) => (
                     <div>
                         <input
                             type={type}
                             onChange={(e) => {
+                                trigger(name) // validate user onChange input
                                 onChange(e.target.value)
+                            }}
+                            onBlur={() => {
+                                trigger(name) // validate user OnBlur input
                                 onBlur()
                             }}
-                            onBlur={onBlur}
                             value={value}
+                            ref={ref}
                             {...rest}
                         />
                     </div>
