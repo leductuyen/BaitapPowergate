@@ -16,6 +16,16 @@ const Api = {
             url: 'auth/register',
         },
     },
+    profile: {
+        user: {
+            method: METHOD.GET,
+            url: 'user',
+        },
+        upload: {
+            method: METHOD.PUT,
+            url: 'user',
+        },
+    },
 }
 
 export default Api

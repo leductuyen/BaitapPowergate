@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [accessToken, setAccessToken] = useState<string>()
     console.log('context', accessToken)
     //! Function
-    // Thêm hàm logout
+
     const logout = () => {
         sessionStorage.removeItem('user')
         setAccessToken(undefined)
