@@ -26,6 +26,12 @@ const Api = {
             url: 'user',
         },
     },
+    product: {
+        getAll: {
+            method: METHOD.GET,
+            url: 'product',
+        },
+    },
 }
 
 export default Api

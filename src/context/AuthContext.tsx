@@ -3,8 +3,8 @@ import { createContext, useEffect, useState } from 'react'
 interface AuthContextType {
     userLogin: any
     setUserLogin: any
-    accessToken: string | undefined
-    setAccessToken: React.Dispatch<React.SetStateAction<string | undefined>>
+    accessToken: any
+    setAccessToken: any
     logout: any
 }
 

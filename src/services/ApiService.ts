@@ -7,7 +7,7 @@ const sendRequest = async (
         method: string
         url: string
     },
-    data: any,
+    data?: any,
     headers?: any,
     ...rest: any[]
 ) => {
