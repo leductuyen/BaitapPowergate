@@ -1,6 +1,6 @@
-import Login from './pages/Login/Login'
+import { SwitchRoutes } from './Routes'
 
 function App() {
-    return <Login />
+    return <SwitchRoutes />
 }
 export default App

@@ -19,10 +19,10 @@ export const validate: Resolver<IValues_Login> = async (values) => {
             type: 'required',
             message: 'Password is required',
         }
-    } else if (values.password.length < 8) {
+    } else if (values.password.length < 6) {
         errors.password = {
             type: 'minLength',
-            message: 'Password must be at least 8 characters',
+            message: 'Password must be at least 6 characters',
         }
     }
     if (Object.keys(errors).length > 0) {
