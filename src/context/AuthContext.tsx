@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return savedUser ? JSON.parse(savedUser) : null
     })
     const [accessToken, setAccessToken] = useState<string>()
-    console.log('context', accessToken)
+
     //! Function
 
     const logout = () => {

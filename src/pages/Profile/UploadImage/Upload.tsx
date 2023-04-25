@@ -1,4 +1,10 @@
-import React, { useState, useRef, ChangeEvent, SyntheticEvent } from 'react'
+import React, {
+    useState,
+    useRef,
+    ChangeEvent,
+    SyntheticEvent,
+    useContext,
+} from 'react'
 import ReactCrop, {
     centerCrop,
     makeAspectCrop,
@@ -9,6 +15,7 @@ import { canvasPreview } from './canvasPreview'
 import { useDebounceEffect } from './useDebounceEffect'
 import 'react-image-crop/dist/ReactCrop.css'
 import './Upload.scss'
+import { AuthContext } from '../../../context/AuthContext'
 
 const centerAspectCrop = (
     mediaWidth: number,
@@ -31,7 +38,9 @@ const centerAspectCrop = (
 }
 
 const Upload = () => {
-    const [imgSrc, setImgSrc] = useState('')
+    const { userLogin } = useContext(AuthContext)
+    const [imgSrc, setImgSrc] = useState(userLogin?.avatar)
+    console.log(imgSrc)
     const previewCanvasRef = useRef<HTMLCanvasElement>(null)
     const imgRef = useRef<HTMLImageElement>(null)
     const [crop, setCrop] = useState<Crop>()
@@ -91,7 +100,7 @@ const Upload = () => {
                     <img
                         ref={imgRef}
                         alt="Crop me"
-                        src={imgSrc}
+                        src={imgSrc ? imgSrc : ''}
                         onLoad={onImageLoad}
                         className="my-image"
                     />
