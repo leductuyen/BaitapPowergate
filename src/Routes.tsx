@@ -6,6 +6,7 @@ import Login from './pages/Login/Login'
 import Profile from './pages/Profile/Profile'
 import SignUp from './pages/SignUp/SignUp'
 import Product from './pages/Product/Product'
+import ProductById from './pages/ProductById/ProductById'
 
 const ProtectedRoute = ({ children }: any) => {
     const { accessToken } = useContext(AuthContext)
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
     {
         path: '/product',
         element: <Product />,
+    },
+    {
+        path: '/product/:id',
+        element: <ProductById />,
     },
     {
         path: '/profile',

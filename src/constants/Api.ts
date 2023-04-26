@@ -1,3 +1,5 @@
+import { url } from 'inspector'
+
 const METHOD = {
     GET: 'GET',
     POST: 'POST',
@@ -34,6 +36,16 @@ const Api = {
         delete: (id: number) => {
             return {
                 method: METHOD.DELETE,
+                url: `product/${id}`,
+            }
+        },
+        update: {
+            method: METHOD.PUT,
+            url: 'product',
+        },
+        getById: (id: any) => {
+            return {
+                method: METHOD.GET,
                 url: `product/${id}`,
             }
         },

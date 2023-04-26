@@ -4,15 +4,14 @@ import Api from '../../constants/Api'
 import sendRequest from '../../services/ApiService'
 import {
     IDataTable,
-    IValues_Options,
     currencyOptions,
     fundingMethodOptions,
-    initialValues_Options,
     orderOptions,
     statusOptions,
     totalOptions,
 } from './Config'
 import './Product.scss'
+import { Link } from 'react-router-dom'
 
 const Product = () => {
     const access_token = document.cookie
@@ -29,11 +28,9 @@ const Product = () => {
     })
 
     const [dataTable, setDataTable] = useState<IDataTable[]>([])
+
     const [originalData, setOriginalData] = useState<IDataTable[]>([])
-    const [formValues, setFormValues] = useState<IValues_Options>(
-        initialValues_Options
-    )
-    console.log(formValues)
+
     //! Function
     const getAllProduct = async () => {
         try {
@@ -49,10 +46,69 @@ const Product = () => {
     const handleOptionChange = (event: any) => {
         setOptions({ ...options, [event.target.name]: event.target.value })
     }
-    const handleInputChange = (e: any) => {
-        const { value, name } = e.target
-        setFormValues({ ...formValues, [name]: value })
+
+    const handleStatusChange = async (event: any, tableId: any) => {
+        const status = event.target.value
+
+        const newDataTable = dataTable.map((table) =>
+            table.id === tableId ? { ...table, status: status } : table
+        )
+
+        setDataTable(newDataTable)
+        const selectedTable = newDataTable.find((table) => table.id === tableId)
+        const requestBody = {
+            id: tableId,
+            order: selectedTable?.order,
+            status: status,
+            total: selectedTable?.total,
+            currency: selectedTable?.currency,
+            fundingMethod: selectedTable?.fundingMethod,
+        }
+        try {
+            await sendRequest(
+                Api.product.update,
+
+                requestBody,
+                {
+                    Authorization: `${access_token}`,
+                }
+            )
+        } catch (error) {
+            console.log(error)
+        }
     }
+
+    const handleTotalChange = async (event: any, tableId: any) => {
+        const total = event.target.value
+        const newDataTable = dataTable.map((table) =>
+            table.id === tableId
+                ? { ...table, total: event.target.value }
+                : table
+        )
+        setDataTable(newDataTable)
+        const selectedTable = newDataTable.find((table) => table.id === tableId)
+        const requestBody = {
+            id: tableId,
+            order: selectedTable?.order,
+            status: selectedTable?.status,
+            total: total,
+            currency: selectedTable?.currency,
+            fundingMethod: selectedTable?.fundingMethod,
+        }
+        try {
+            await sendRequest(
+                Api.product.update,
+
+                requestBody,
+                {
+                    Authorization: `${access_token}`,
+                }
+            )
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const handleApply = () => {
         const filteredData = originalData.filter((item) => {
             let shouldInclude = true
@@ -80,15 +136,21 @@ const Product = () => {
 
         setDataTable(filteredData)
     }
+    const handleClear = () => {
+        setDataTable(originalData)
+        setOptions({
+            status: '',
+            currency: '',
+            fundingMethod: '',
+            total: '',
+            order: '',
+        })
+    }
     const handleDelete = async (id: any) => {
         try {
-            const response = await sendRequest(
-                Api.product.delete(id),
-                undefined,
-                {
-                    Authorization: `${access_token}`,
-                }
-            )
+            await sendRequest(Api.product.delete(id), undefined, {
+                Authorization: `${access_token}`,
+            })
         } catch (error) {
             console.log(error)
         }
@@ -155,7 +217,7 @@ const Product = () => {
                             <button onClick={handleApply}>Apply</button>
                         </td>
                         <td>
-                            <button>Clear</button>
+                            <button onClick={handleClear}>Clear</button>
                         </td>
                     </tr>
                 </thead>
@@ -170,24 +232,40 @@ const Product = () => {
                     </tr>
                     {dataTable.map((table) => (
                         <tr key={table.id}>
-                            <td>{table.status}</td>
-                            <input
-                                onChange={handleInputChange}
-                                value={formValues.status}
-                                id={`status-${table.id}`}
-                                name={`status-${table.id}`}
-                            />
+                            <td>
+                                <Select
+                                    id="status-select"
+                                    name="status"
+                                    value={table.status}
+                                    onChange={(e: any) =>
+                                        handleStatusChange(e, table.id)
+                                    }
+                                    selects={statusOptions}
+                                />
+                            </td>
                             <td>{table?.currency}</td>
                             <td>{table?.fundingMethod}</td>
-                            <td>{table?.total}</td>
-                            <td>{table?.order}</td>
+                            <td>
+                                <Select
+                                    id="total-select"
+                                    name="total"
+                                    value={table.total}
+                                    onChange={(e: any) =>
+                                        handleTotalChange(e, table.id)
+                                    }
+                                    selects={totalOptions}
+                                />
+                            </td>
+                            <td>{table.order}</td>
                             <td>
                                 <button onClick={() => handleDelete(table.id)}>
                                     Delete
                                 </button>
                             </td>
                             <td>
-                                <button>ViewAll</button>
+                                <Link to={`/product/${table.id}`}>
+                                    <button>ViewAll</button>
+                                </Link>
                             </td>
                         </tr>
                     ))}
