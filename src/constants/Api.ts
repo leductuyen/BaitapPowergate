@@ -31,6 +31,12 @@ const Api = {
             method: METHOD.GET,
             url: 'product',
         },
+        delete: (id: number) => {
+            return {
+                method: METHOD.DELETE,
+                url: `product/${id}`,
+            }
+        },
     },
 }
 

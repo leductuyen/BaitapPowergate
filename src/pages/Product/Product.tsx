@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react'
-import sendRequest from '../../services/ApiService'
+import Select from '../../components/Select'
 import Api from '../../constants/Api'
+import sendRequest from '../../services/ApiService'
 import {
     IDataTable,
+    IValues_Options,
     currencyOptions,
     fundingMethodOptions,
+    initialValues_Options,
     orderOptions,
     statusOptions,
     totalOptions,
 } from './Config'
 import './Product.scss'
-import Select from '../../components/Select'
 
 const Product = () => {
     const access_token = document.cookie
@@ -27,7 +29,11 @@ const Product = () => {
     })
 
     const [dataTable, setDataTable] = useState<IDataTable[]>([])
-
+    const [originalData, setOriginalData] = useState<IDataTable[]>([])
+    const [formValues, setFormValues] = useState<IValues_Options>(
+        initialValues_Options
+    )
+    console.log(formValues)
     //! Function
     const getAllProduct = async () => {
         try {
@@ -35,7 +41,7 @@ const Product = () => {
                 Authorization: `${access_token}`,
             })
             setDataTable(response.data)
-            console.log(response.data)
+            setOriginalData(response.data)
         } catch (error) {
             console.log(error)
         }
@@ -43,8 +49,12 @@ const Product = () => {
     const handleOptionChange = (event: any) => {
         setOptions({ ...options, [event.target.name]: event.target.value })
     }
+    const handleInputChange = (e: any) => {
+        const { value, name } = e.target
+        setFormValues({ ...formValues, [name]: value })
+    }
     const handleApply = () => {
-        const filteredData = dataTable.filter((item) => {
+        const filteredData = originalData.filter((item) => {
             let shouldInclude = true
             if (options.status && options.status !== item.status) {
                 shouldInclude = false
@@ -67,9 +77,22 @@ const Product = () => {
 
             return shouldInclude
         })
+
         setDataTable(filteredData)
     }
-    const handleDelete = (id: any) => {
+    const handleDelete = async (id: any) => {
+        try {
+            const response = await sendRequest(
+                Api.product.delete(id),
+                undefined,
+                {
+                    Authorization: `${access_token}`,
+                }
+            )
+        } catch (error) {
+            console.log(error)
+        }
+
         setDataTable(dataTable.filter((item) => item.id !== id))
     }
     useEffect(() => {
@@ -94,7 +117,7 @@ const Product = () => {
                             <Select
                                 id="currency-select"
                                 name="currency"
-                                value={options.status}
+                                value={options.currency}
                                 onChange={handleOptionChange}
                                 selects={currencyOptions}
                             />
@@ -103,7 +126,7 @@ const Product = () => {
                             <Select
                                 id="fundingMethod-select"
                                 name="fundingMethod"
-                                value={options.status}
+                                value={options.fundingMethod}
                                 onChange={handleOptionChange}
                                 selects={fundingMethodOptions}
                             />
@@ -112,7 +135,7 @@ const Product = () => {
                             <Select
                                 id="total-select"
                                 name="total"
-                                value={options.status}
+                                value={options.total}
                                 onChange={handleOptionChange}
                                 selects={totalOptions}
                             />
@@ -122,7 +145,7 @@ const Product = () => {
                             <Select
                                 id="order-select"
                                 name="order"
-                                value={options.status}
+                                value={options.order}
                                 onChange={handleOptionChange}
                                 selects={orderOptions}
                             />
@@ -148,6 +171,12 @@ const Product = () => {
                     {dataTable.map((table) => (
                         <tr key={table.id}>
                             <td>{table.status}</td>
+                            <input
+                                onChange={handleInputChange}
+                                value={formValues.status}
+                                id={`status-${table.id}`}
+                                name={`status-${table.id}`}
+                            />
                             <td>{table?.currency}</td>
                             <td>{table?.fundingMethod}</td>
                             <td>{table?.total}</td>

@@ -9,10 +9,47 @@ export interface IDataTable {
     date?: string
 }
 
+export interface IFormInput_Options {
+    [key: string]: {
+        attrs: {
+            name: string
+            label: string
+            type: string
+        }
+    }
+}
+
+export const formInput_Options: IFormInput_Options = {
+    status: {
+        attrs: {
+            name: 'status',
+            label: 'Status',
+            type: 'text',
+        },
+    },
+    total: {
+        attrs: {
+            name: 'total',
+            label: 'total',
+            type: 'number',
+        },
+    },
+}
+
+export interface IValues_Options {
+    status: string
+    total: number
+}
+
+export const initialValues_Options: IValues_Options = {
+    status: '',
+    total: 0,
+}
+
 export const statusOptions = [
-    { key: 'Pending', name: 'Pending' },
-    { key: 'Processing', name: 'Processing' },
-    { key: 'Fullfield', name: 'Fullfield' },
+    { key: 'PENDING', name: 'PENDING' },
+    { key: 'PROCESSING', name: 'PROCESSING' },
+    { key: 'FULLFIELD', name: 'FULLFIELD' },
 ]
 
 export const currencyOptions = [
