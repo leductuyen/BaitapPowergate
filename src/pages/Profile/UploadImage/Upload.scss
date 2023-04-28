@@ -4,6 +4,46 @@
         max-width: 100%;
     }
 }
+.Upload input[type='file'] {
+    /* tùy chỉnh kích thước */
+    width: 50px;
+    height: 50px;
+
+    /* tùy chỉnh kiểu chữ */
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    /* thêm viền */
+    border: 2px solid #000;
+    border-radius: 5px;
+
+    /* thêm padding và margin */
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.Upload canvas {
+    /* tùy chỉnh kích thước */
+    width: 50px;
+    height: 50px;
+
+    border-radius: 50%;
+    /* tùy chỉnh vị trí */
+    margin: 0 auto;
+    display: block;
+}
+
+.Upload img {
+    /* tùy chỉnh kích thước */
+    width: 350px;
+    height: 350px;
+
+    border-radius: 50%;
+    /* tùy chỉnh vị trí */
+    margin: 0 auto;
+    display: block;
+}
 
 .Crop-Controls {
     margin-bottom: 10px;

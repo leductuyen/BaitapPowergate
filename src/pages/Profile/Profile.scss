@@ -1,4 +1,18 @@
-.uploaded-img {
-    height: auto;
-    width: 500px;
+.container {
+    .email,
+    .user,
+    .state,
+    .region {
+        .title {
+            font-size: 22px;
+            color: black;
+        }
+        .content {
+            font-size: 18px;
+            color: black;
+        }
+    }
+    button {
+        margin-top: 20px;
+    }
 }
